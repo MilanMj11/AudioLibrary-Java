@@ -42,6 +42,6 @@ public class User {
     }
 
     public void setAdmin(boolean isAdmin) {
-        isAdmin = isAdmin;
+        this.isAdmin = isAdmin;
     }
 }

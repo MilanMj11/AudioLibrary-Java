@@ -62,7 +62,7 @@ public class UserService {
 
     public boolean performpromoteUser(String username) {
         User user = userDAO.findUserByUsername(username);
-        if (user != null && user.isAdmin()) {
+        if (user != null && !user.isAdmin()) {
             user.setAdmin(true);
             return userDAO.updateUser(user);
         }
