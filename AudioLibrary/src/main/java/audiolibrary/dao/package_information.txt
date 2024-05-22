@@ -1,0 +1,2 @@
+Acest pachet contine:
+DAO -> Data Access Objects pentru interactiunea cu baza de date.

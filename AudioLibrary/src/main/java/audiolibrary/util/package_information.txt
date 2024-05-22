@@ -1,0 +1,2 @@
+Acest pachet contine:
+Utilitare, precum gestionarea conexiunii la baza de date si serviciul de audit.

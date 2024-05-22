@@ -1,0 +1,2 @@
+Acest pachet contine:
+Logica aplicatiei -> autentificare, inregistrare, gestionarea melodiilor si a playlisturilor

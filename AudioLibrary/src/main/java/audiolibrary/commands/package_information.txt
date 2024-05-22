@@ -1,0 +1,2 @@
+Acest pachet contine:
+Comenzile care vor fi executate in aplicatie.

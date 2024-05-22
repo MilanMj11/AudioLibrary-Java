@@ -1,0 +1,2 @@
+Acest pachet contine:
+Clasele pentru modelul de date, precum: User, Song, Playlist.
