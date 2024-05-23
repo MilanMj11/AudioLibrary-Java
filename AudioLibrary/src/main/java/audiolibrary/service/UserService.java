@@ -15,6 +15,10 @@ public class UserService {
         this.currentState = new AnonymousUser(this);
     }
 
+    public boolean isCurrentUserAdmin() {
+        return currentState instanceof AdminUser;
+    }
+
     public void setCurrentState(UserState state) {
         this.currentState = state;
     }

@@ -30,4 +30,5 @@ public class AdminUser implements UserState{
     public boolean promote(String username){
         return userService.performpromoteUser(username);
     }
+
 }
