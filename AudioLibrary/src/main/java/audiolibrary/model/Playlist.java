@@ -17,4 +17,24 @@ public class Playlist {
         this.songIds = new ArrayList<>();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public List<Integer> getSongIds() {
+        return songIds;
+    }
+
+    public void addSong(int songId) {
+        this.songIds.add(songId);
+    }
+
 }

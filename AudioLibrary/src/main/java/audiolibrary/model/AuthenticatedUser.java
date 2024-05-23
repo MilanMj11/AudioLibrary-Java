@@ -30,4 +30,9 @@ public class AuthenticatedUser implements UserState{
     public boolean promote(String username) throws Exception {
         throw new Exception("Only admins can promote users.");
     }
+
+    @Override
+    public User getUser() {
+        return currentUser;
+    }
 }

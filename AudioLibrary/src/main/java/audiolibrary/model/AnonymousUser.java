@@ -28,4 +28,9 @@ public class AnonymousUser implements UserState{
     public boolean promote(String username) throws Exception {
         throw new Exception("Only admins can promote users.");
     }
+
+    @Override
+    public User getUser() throws Exception{
+        throw new Exception("You are not logged in.");
+    }
 }

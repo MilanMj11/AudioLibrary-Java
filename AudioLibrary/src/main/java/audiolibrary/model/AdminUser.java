@@ -31,4 +31,8 @@ public class AdminUser implements UserState{
         return userService.performpromoteUser(username);
     }
 
+    @Override
+    public User getUser() {
+        return currentUser;
+    }
 }

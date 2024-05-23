@@ -2,6 +2,7 @@ import audiolibrary.commands.CommandController;
 import audiolibrary.exceptions.InvalidNumberOfArgumentsException;
 import audiolibrary.exceptions.InvalidUsernameOrPasswordException;
 import audiolibrary.exceptions.UsernameAlreadyExistsException;
+import audiolibrary.service.PlaylistService;
 import audiolibrary.service.SongService;
 import audiolibrary.service.UserService;
 import audiolibrary.util.DatabaseUtil;
@@ -21,7 +22,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserService userService = new UserService();
         SongService songService = new SongService();
-        CommandController commandController = new CommandController(userService, songService);
+        PlaylistService playlistService = new PlaylistService();
+        CommandController commandController = new CommandController(userService, songService, playlistService);
 
         while (true) {
             System.out.print(">");

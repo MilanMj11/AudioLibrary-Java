@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "test2",
+    "userId": "admin",
+    "songIds": []
+  },
+  {
+    "id": 1,
+    "name": "AdminPlaylist",
+    "userId": "admin",
+    "songIds": [
+      3,
+      4
+    ]
+  }
+]

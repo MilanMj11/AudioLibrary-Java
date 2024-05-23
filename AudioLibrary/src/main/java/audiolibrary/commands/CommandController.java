@@ -1,22 +1,27 @@
 package audiolibrary.commands;
 
 import audiolibrary.exceptions.InvalidNumberOfArgumentsException;
+import audiolibrary.service.PlaylistService;
 import audiolibrary.service.SongService;
 import audiolibrary.service.UserService;
 
 import java.security.spec.ECField;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class CommandController {
     private UserService userService;
     private SongService songService;
+    private PlaylistService playlistService;
 
-    public CommandController(UserService userService, SongService songService) {
+    public CommandController(UserService userService, SongService songService, PlaylistService playListService) {
         this.userService = userService;
         this.songService = songService;
+        this.playlistService = playListService;
     }
 
     public void executeCommand(String command) {
@@ -101,6 +106,17 @@ public class CommandController {
                         songService.createSong(songName, authorName, Integer.parseInt(parts[4]));
                         System.out.println("Song created successfully");
                     }
+                    if (parts.length >= 2 && "playlist".equals(parts[1])) {
+                        if (!userService.isCurrentUserAuthenticated()) {
+                            throw new Exception("You need to be logged in to create a playlist.");
+                        }
+
+                        if (parts.length != 3) throw new InvalidNumberOfArgumentsException();
+
+                        playlistService.createPlaylist(userService.getCurrentUser(), parts[2]);
+                        System.out.println("Playlist created successfully");
+                    }
+
                     throw new Exception("Unknown create command");
 
                 } catch (InvalidNumberOfArgumentsException e) {
@@ -110,6 +126,25 @@ public class CommandController {
                     System.out.println("Create failed: " + e.getMessage());
                 }
                 break;
+            case "add":
+                try {
+                    if(parts.length != 3) {
+                        throw new InvalidNumberOfArgumentsException();
+                    }
+                    if(!userService.isCurrentUserAuthenticated()){
+                        throw new Exception("You need to be logged to add songs to a playlist.");
+                    }
+                    String playlistName = parts[1];
+                    List<Integer> songIds = Arrays.stream(parts[2].replace("[", "").replace("]", "").split(","))
+                            .map(Integer::parseInt)
+                            .collect(Collectors.toList());
+                    playlistService.addSongsToPlaylist(userService.getCurrentUser(), playlistName, songIds, songService.getAllSongs());
+
+                } catch (InvalidNumberOfArgumentsException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Add failed: " + e.getMessage());
+                }
             default:
                 System.out.println("Command unknown!");
         }

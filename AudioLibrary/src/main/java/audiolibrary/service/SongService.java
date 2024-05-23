@@ -22,6 +22,9 @@ public class SongService {
         return true;
     }
 
+    public List<Song> getAllSongs() {
+        return songDAO.getAllSongs();
+    }
     /*
     public List<Song> searchSongsByName(String name) {
         return songDAO.getAllSongs().stream()

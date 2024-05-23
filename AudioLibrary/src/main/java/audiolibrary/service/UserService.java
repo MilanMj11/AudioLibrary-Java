@@ -15,8 +15,16 @@ public class UserService {
         this.currentState = new AnonymousUser(this);
     }
 
+    public User getCurrentUser() throws Exception{
+        return currentState.getUser();
+    }
+
     public boolean isCurrentUserAdmin() {
         return currentState instanceof AdminUser;
+    }
+
+    public boolean isCurrentUserAuthenticated() {
+        return (currentState instanceof AuthenticatedUser) || (currentState instanceof AdminUser);
     }
 
     public void setCurrentState(UserState state) {
