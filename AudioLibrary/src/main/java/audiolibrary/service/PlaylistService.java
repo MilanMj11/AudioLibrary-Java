@@ -4,16 +4,12 @@ import audiolibrary.dao.PlaylistDAO;
 import audiolibrary.model.Playlist;
 import audiolibrary.model.Song;
 import audiolibrary.model.User;
-import audiolibrary.util.JsonUtil;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static audiolibrary.util.JsonUtil.getNextPlaylistIdByUserFromJson;
-import static audiolibrary.util.JsonUtil.savePlaylistsToJson;
+import static audiolibrary.util.JsonUtil.*;
 
 public class PlaylistService {
 
@@ -34,14 +30,6 @@ public class PlaylistService {
         return false;
     }
 
-    private void initializeUserPlaylistsFile(User user) throws Exception {
-        String filename = "playlists_" + user.getUsername() + ".json";
-        File file = new File(filename);
-        if (!file.exists()) {
-            List<Playlist> emptyPlaylists = new ArrayList<>();
-            JsonUtil.savePlaylistsToJson(user.getUsername(), emptyPlaylists);
-        }
-    }
 
     public void createPlaylist(User user, String playlistName) throws Exception {
         initializeUserPlaylistsFile(user);

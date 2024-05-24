@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "asdlkasd",
+    "userId": "milan",
+    "songIds": []
+  },
+  {
+    "id": 2,
+    "name": "second",
+    "userId": "milan",
+    "songIds": [
+      1,
+      2,
+      3,
+      5
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Third",
+    "userId": "milan",
+    "songIds": []
+  }
+]
