@@ -17,6 +17,7 @@ import static audiolibrary.util.JsonUtil.savePlaylistsToJson;
 
 public class PlaylistService {
 
+    private static final int SONGS_PER_PAGE = 5;
     private Map<User, List<Playlist>> userPlaylists = new HashMap<>();
     private PlaylistDAO playlistDAO = new PlaylistDAO();
 
@@ -47,7 +48,7 @@ public class PlaylistService {
 
         boolean loadedSomething = loadPlaylists(user);
 
-        if(!loadedSomething) {
+        if (!loadedSomething) {
             throw new Exception("Failed to load playlists for user " + user.getUsername());
         }
 
@@ -102,6 +103,38 @@ public class PlaylistService {
         playlist.getSongIds().addAll(songIds);
         playlistDAO.savePlaylists(user.getUsername(), playlists);
         System.out.println("Added songs to \"" + playlistName + "\" successfully!");
+    }
+
+    public void listPlaylists(User user, int page) throws Exception {
+        loadPlaylists(user);
+        List<Playlist> playlists = getUserPlaylists(user);
+        if (playlists == null) {
+            System.out.println("You currently have no playlists.");
+            return;
+        }
+
+        int totalPlaylists = playlists.size();
+        int totalPages = (int) Math.ceil((double) totalPlaylists / SONGS_PER_PAGE);
+
+        if (page < 1 || page > totalPages) {
+            throw new Exception("Invalid page number.");
+        }
+
+        int start = (page - 1) * SONGS_PER_PAGE;
+        int end = Math.min(totalPlaylists, start + SONGS_PER_PAGE);
+
+        System.out.println("Page " + page + " of " + totalPages + " (max " + SONGS_PER_PAGE + " items per page):");
+
+        for (int i = start; i < end; i++) {
+            Playlist playlist = playlists.get(i);
+            System.out.println((i + 1) + ". " + playlist.getName());
+        }
+
+        if(totalPages > 1){
+            System.out.println("To return to a desired page run the query as follows:");
+            System.out.println("`list playlists <page_number>`");
+        }
+
     }
 
     public List<Playlist> getUserPlaylists(User user) {

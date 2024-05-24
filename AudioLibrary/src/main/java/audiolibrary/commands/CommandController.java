@@ -156,6 +156,33 @@ public class CommandController {
                     System.out.println("Add failed: " + e.getMessage());
                 }
                 break;
+            case "list":
+                try {
+                    if (parts.length == 2){
+                        if ("playlists".equals(parts[1])){
+                            if (!userService.isCurrentUserAuthenticated()) {
+                                throw new Exception("You need to be logged in to list your playlists.");
+                            }
+                            playlistService.listPlaylists(userService.getCurrentUser(), 1);
+                        } else {
+                            throw new Exception("Unknown list command");
+                        }
+                    } else {
+                        if (parts.length == 3) {
+                            if (!userService.isCurrentUserAuthenticated()) {
+                                throw new Exception("You need to be logged in to list your playlists.");
+                            }
+                            playlistService.listPlaylists(userService.getCurrentUser(), Integer.parseInt(parts[2]));
+                        } else {
+                            throw new InvalidNumberOfArgumentsException();
+                        }
+                    }
+                } catch (InvalidNumberOfArgumentsException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("List failed: " + e.getMessage());
+                }
+                break;
             default:
                 System.out.println("Command unknown!");
         }
