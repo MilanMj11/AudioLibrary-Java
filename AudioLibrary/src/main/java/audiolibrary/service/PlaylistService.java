@@ -10,15 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static audiolibrary.util.JsonUtil.getNextPlaylistIdByUserFromJson;
+
 public class PlaylistService {
 
     private Map<User, List<Playlist>> userPlaylists = new HashMap<>();
     private PlaylistDAO playlistDAO = new PlaylistDAO();
-    private Map<String, Integer> nextPlaylistIdByUser = new HashMap<>();
-
-    public PlaylistService() {
-        nextPlaylistIdByUser = playlistDAO.loadNextPlaylistIdByUser();
-    }
 
     public void loadPlaylists(User user) {
         /// if the user's playlists are already loaded, return
@@ -40,11 +37,9 @@ public class PlaylistService {
             }
         }
 
-        int nextId = nextPlaylistIdByUser.getOrDefault(user.getUsername(), 1);
+        int nextId = getNextPlaylistIdByUserFromJson(user.getUsername());
         Playlist playlist = new Playlist(nextId, playlistName, user.getUsername());
         playlists.add(playlist);
-
-        nextPlaylistIdByUser.put(user.getUsername(), nextId + 1);
 
         playlistDAO.savePlaylists(user.getUsername(), playlists);
         System.out.println("Playlist " + playlistName + " was created successfully!");

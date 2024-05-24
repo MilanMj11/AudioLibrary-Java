@@ -4,7 +4,6 @@ import audiolibrary.model.Playlist;
 import audiolibrary.util.JsonUtil;
 
 import java.util.List;
-import java.util.Map;
 
 public class PlaylistDAO {
 
@@ -16,11 +15,4 @@ public class PlaylistDAO {
         return JsonUtil.loadPlaylistsFromJson(username);
     }
 
-    public void saveNextPlaylistIdByUser(Map<String, Integer> nextPlaylistIdByUser) {
-        JsonUtil.saveNextPlaylistIdByUserToJson(nextPlaylistIdByUser);
-    }
-
-    public Map<String, Integer> loadNextPlaylistIdByUser() {
-        return JsonUtil.loadNextPlaylistIdByUserFromJson();
-    }
 }

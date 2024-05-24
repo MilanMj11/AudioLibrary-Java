@@ -35,23 +35,18 @@ public class JsonUtil {
         }
     }
 
-
-    public static void saveNextPlaylistIdByUserToJson(Map<String, Integer> nextPlaylistIdByUser) {
-        String json = gson.toJson(nextPlaylistIdByUser);
-        try (FileWriter writer = new FileWriter("next_playlist_id_by_user.json")) {
-            writer.write(json);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    public static Integer getNextPlaylistIdByUserFromJson(String username) {
+        List<Playlist> playlists = loadPlaylistsFromJson(username);
+        if(playlists == null || playlists.isEmpty()) {
+            return 1;
         }
-    }
-
-    public static Map<String, Integer> loadNextPlaylistIdByUserFromJson() {
-        try (FileReader reader = new FileReader("next_playlist_id_by_user.json")) {
-            return gson.fromJson(reader, Map.class);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return new HashMap<>();
+        int maxId = 1;
+        for(Playlist playlist : playlists) {
+            if (playlist.getId() > maxId) {
+                maxId = playlist.getId();
+            }
         }
+        return maxId + 1;
     }
 
 }

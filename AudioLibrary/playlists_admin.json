@@ -1,17 +1,27 @@
 [
   {
     "id": 1,
-    "name": "test2",
+    "name": "admin1",
     "userId": "admin",
-    "songIds": []
+    "songIds": [
+      1,
+      2,
+      3
+    ]
   },
   {
-    "id": 1,
-    "name": "AdminPlaylist",
+    "id": 2,
+    "name": "admin2",
     "userId": "admin",
     "songIds": [
       3,
       4
     ]
+  },
+  {
+    "id": 3,
+    "name": "admin3",
+    "userId": "admin",
+    "songIds": []
   }
 ]
