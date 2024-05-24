@@ -6,7 +6,8 @@
     "songIds": [
       1,
       2,
-      3
+      3,
+      4
     ]
   },
   {
@@ -23,5 +24,23 @@
     "name": "admin3",
     "userId": "admin",
     "songIds": []
+  },
+  {
+    "id": 4,
+    "name": "New One Out",
+    "userId": "admin",
+    "songIds": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": 5,
+    "name": "test playlist ok",
+    "userId": "admin",
+    "songIds": [
+      1,
+      2
+    ]
   }
 ]

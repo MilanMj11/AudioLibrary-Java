@@ -81,6 +81,8 @@ public class CommandController {
                 break;
             case "create":
                 try {
+                    boolean createdSomething = false;
+                    /// This is the create song part ->
                     if (parts.length >= 2 && "song".equals(parts[1])) {
                         /// Only Admins can use the create command.
                         if (!userService.isCurrentUserAdmin()) {
@@ -103,8 +105,11 @@ public class CommandController {
                         authorName = authorName.substring(1, authorName.length() - 1);
 
                         songService.createSong(songName, authorName, Integer.parseInt(parts[4]));
+                        createdSomething = true;
                         System.out.println("Song created successfully");
                     }
+
+                    // This is the create playlist part ->
                     if (parts.length >= 2 && "playlist".equals(parts[1])) {
                         if (!userService.isCurrentUserAuthenticated()) {
                             throw new Exception("You need to be logged in to create a playlist.");
@@ -112,11 +117,14 @@ public class CommandController {
 
                         if (parts.length != 3) throw new InvalidNumberOfArgumentsException();
 
-                        playlistService.createPlaylist(userService.getCurrentUser(), parts[2]);
-                        System.out.println("Playlist created successfully");
+                        String playlistName = parts[2];
+                        playlistName = getRidOfQuotes(playlistName);
+                        playlistService.createPlaylist(userService.getCurrentUser(), playlistName);
+                        createdSomething = true;
+                        // System.out.println("Playlist created successfully");
                     }
-
-                    throw new Exception("Unknown create command");
+                    if (!createdSomething)
+                        throw new Exception("Unknown create command");
 
                 } catch (InvalidNumberOfArgumentsException e) {
                     System.out.println(e.getMessage());
@@ -127,13 +135,16 @@ public class CommandController {
                 break;
             case "add":
                 try {
-                    if(parts.length != 3) {
+                    if (parts.length != 3) {
                         throw new InvalidNumberOfArgumentsException();
                     }
-                    if(!userService.isCurrentUserAuthenticated()){
+                    if (!userService.isCurrentUserAuthenticated()) {
                         throw new Exception("You need to be logged to add songs to a playlist.");
                     }
+
                     String playlistName = parts[1];
+                    playlistName = getRidOfQuotes(playlistName);
+
                     List<Integer> songIds = Arrays.stream(parts[2].replace("[", "").replace("]", "").split(","))
                             .map(Integer::parseInt)
                             .collect(Collectors.toList());
@@ -144,9 +155,17 @@ public class CommandController {
                 } catch (Exception e) {
                     System.out.println("Add failed: " + e.getMessage());
                 }
+                break;
             default:
                 System.out.println("Command unknown!");
         }
+    }
+
+    private String getRidOfQuotes(String str) throws Exception {
+        if (!str.startsWith("\"") || !str.endsWith("\"")) {
+            throw new Exception("Song name and author name must be quoted with \"\".");
+        }
+        return str.substring(1, str.length() - 1);
     }
 
     private String[] splitCommand(String command) {
