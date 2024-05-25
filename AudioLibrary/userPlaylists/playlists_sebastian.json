@@ -3,6 +3,12 @@
     "id": 1,
     "name": "My first playlist",
     "userId": "sebastian",
-    "songIds": []
+    "songIds": [
+      2,
+      3,
+      5,
+      8,
+      12
+    ]
   }
 ]

@@ -4,18 +4,89 @@ import audiolibrary.dao.PlaylistDAO;
 import audiolibrary.model.Playlist;
 import audiolibrary.model.Song;
 import audiolibrary.model.User;
+import com.google.gson.Gson;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static audiolibrary.util.JsonUtil.*;
 
 public class PlaylistService {
 
-    private static final int SONGS_PER_PAGE = 5;
+    private static final int PLAYLISTS_PER_PAGE = 5;
     private Map<User, List<Playlist>> userPlaylists = new HashMap<>();
     private PlaylistDAO playlistDAO = new PlaylistDAO();
+    private PagingService<Playlist> pagingService = new PagingService<>();
+    private SongService songService = new SongService();
+
+    public <T> void exportPlaylist(User user, T playlistIdentifier, String format) throws Exception {
+        /// will only work with JSON format
+        loadPlaylists(user);
+        List<Playlist> playlists = getUserPlaylists(user);
+
+        Playlist playlist = null;
+
+        if (playlistIdentifier instanceof Integer) {
+            int id = (Integer) playlistIdentifier;
+            for (Playlist p : playlists) {
+                if (p.getId() == id) {
+                    playlist = p;
+                    break;
+                }
+            }
+        } else if (playlistIdentifier instanceof String) {
+            String name = (String) playlistIdentifier;
+            for (Playlist p : playlists) {
+                if (p.getName().equals(name)) {
+                    playlist = p;
+                    break;
+                }
+            }
+        } else {
+            throw new Exception("Invalid playlist identifier");
+        }
+
+        if (playlist == null) {
+            throw new Exception("Playlist " + playlistIdentifier.toString() + " not found");
+        }
+
+        if(!"json".equalsIgnoreCase(format)) {
+            throw new Exception("Unsupported format: " + format);
+        }
+
+        String filename = "export_" + user.getUsername() + "_" + playlist.getName() + "_" + getCurrentDate() + ".json";
+        exportPlaylistToJson(playlist, filename);
+
+        System.out.println("Playlist " + playlist.getName() + " exported successfully to " + filename);
+
+    }
+
+    private void exportPlaylistToJson(Playlist playlist, String filename) throws Exception {
+        List<Song> songs = songService.getSongsByIds(playlist.getSongIds());
+        ExportPLaylist exportPLaylist = new ExportPLaylist(playlist.getName(), songs);
+        String playlistJson = new Gson().toJson(exportPLaylist);
+        try(FileWriter writer = new FileWriter(filename)) {
+            writer.write(playlistJson);
+        } catch (Exception e) {
+            throw new Exception("Failed to export playlist to JSON file");
+        }
+    }
+
+    static class ExportPLaylist{
+        private String playlistName;
+        private List<Song> songs;
+
+        public ExportPLaylist(String playlistName, List<Song> songs) {
+            this.playlistName = playlistName;
+            this.songs = songs;
+        }
+    }
+
+    private String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        return formatter.format(new Date());
+    }
 
     public boolean loadPlaylists(User user) {
         /// if the user's playlists are already loaded, return
@@ -29,7 +100,6 @@ public class PlaylistService {
         }
         return false;
     }
-
 
     public void createPlaylist(User user, String playlistName) throws Exception {
         initializeUserPlaylistsFile(user);
@@ -71,6 +141,12 @@ public class PlaylistService {
         if (playlist == null) {
             throw new Exception("The desired playlist does not exist.");
         }
+
+        /// make the songIds unique with a set so I can't add [1,1,1,2,3,3,3,4] to a playlist
+        Set<Integer> uniqueSongIds = new HashSet<>(songIds);
+        List<Integer> uniqueSongIdsList = new ArrayList<>(uniqueSongIds);
+        songIds = uniqueSongIdsList;
+
         for (Integer songId : songIds) {
             boolean songExists = false;
 
@@ -100,29 +176,7 @@ public class PlaylistService {
             System.out.println("You currently have no playlists.");
             return;
         }
-
-        int totalPlaylists = playlists.size();
-        int totalPages = (int) Math.ceil((double) totalPlaylists / SONGS_PER_PAGE);
-
-        if (page < 1 || page > totalPages) {
-            throw new Exception("Invalid page number");
-        }
-
-        int start = (page - 1) * SONGS_PER_PAGE;
-        int end = Math.min(totalPlaylists, start + SONGS_PER_PAGE);
-
-        System.out.println("Page " + page + " of " + totalPages + " (max " + SONGS_PER_PAGE + " items per page):");
-
-        for (int i = start; i < end; i++) {
-            Playlist playlist = playlists.get(i);
-            System.out.println((i + 1) + ". " + playlist.getName());
-        }
-
-        if(totalPages > 1){
-            System.out.println("To return to a desired page run the query as follows:");
-            System.out.println("`list playlists <page_number>`");
-        }
-
+        pagingService.listItems(playlists, page);
     }
 
     public List<Playlist> getUserPlaylists(User user) {

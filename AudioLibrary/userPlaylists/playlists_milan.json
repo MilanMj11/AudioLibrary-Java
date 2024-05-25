@@ -20,6 +20,12 @@
     "id": 3,
     "name": "Third",
     "userId": "milan",
-    "songIds": []
+    "songIds": [
+      1,
+      2,
+      3,
+      5,
+      7
+    ]
   }
 ]

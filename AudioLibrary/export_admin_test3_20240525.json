@@ -1,0 +1,41 @@
+{
+  "playlistName": "test3",
+  "songs": [
+    {
+      "id": 1,
+      "name": "Not Like Us",
+      "author": "Kendrick Lamar",
+      "releaseYear": 2024
+    },
+    {
+      "id": 6,
+      "name": "Fall Back",
+      "author": "Lithe",
+      "releaseYear": 2024
+    },
+    {
+      "id": 7,
+      "name": "My Darling",
+      "author": "Eminem",
+      "releaseYear": 2019
+    },
+    {
+      "id": 8,
+      "name": "Greatest",
+      "author": "Eminem",
+      "releaseYear": 2019
+    },
+    {
+      "id": 9,
+      "name": "Higher",
+      "author": "Eminem",
+      "releaseYear": 2023
+    },
+    {
+      "id": 10,
+      "name": "Those Kinda Nights",
+      "author": "Eminem",
+      "releaseYear": 2020
+    }
+  ]
+}

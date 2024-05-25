@@ -11,6 +11,7 @@ public class SongService {
 
     private static final int SONGS_PER_PAGE = 5;
     private SongDAO songDAO;
+    private PagingService<Song> pagingService = new PagingService<>();
 
     public SongService() {
         this.songDAO = new SongDAO();
@@ -44,33 +45,14 @@ public class SongService {
         }
     }
 
+    public List<Song> getSongsByIds(List<Integer> ids) {
+        return songDAO.getAllSongs().stream()
+                .filter(song -> ids.contains(song.getId()))
+                .collect(Collectors.toList());
+    }
+
     public void listSongs(List<Song> songs, int page) throws Exception {
-        if (songs.isEmpty()) {
-            throw new Exception("No songs found");
-        }
-
-        int totalSongs = songs.size();
-        int totalPages = (int) Math.ceil((double) totalSongs / SONGS_PER_PAGE);
-
-        if (page < 1 || page > totalPages) {
-            throw new Exception("Invalid page number");
-        }
-
-        int start = (page - 1) * SONGS_PER_PAGE;
-        int end = Math.min(totalSongs, start + SONGS_PER_PAGE);
-
-        System.out.println("Page " + page + " of " + totalPages + " (max " + SONGS_PER_PAGE + " items per page):");
-
-        for (int i = start; i < end; i++) {
-            Song song = songs.get(i);
-            System.out.println((i + 1) + ". " + song.getName() + " - " + song.getAuthor() + " (" + song.getReleaseYear() + ")" + " [ID: " + song.getId() + "]");
-        }
-
-        if (totalPages > 1) {
-            System.out.println("To return to a desired page run the query as follows:");
-            System.out.println("`search <criteria> <Name> <page_number>`");
-        }
-
+        pagingService.listItems(songs, page);
     }
 
 }

@@ -214,6 +214,36 @@ public class CommandController {
                     System.out.println("Search failed: " + e.getMessage());
                 }
                 break;
+            case "export":
+                try {
+                    if (parts.length >= 2 && "playlist".equals(parts[1])) {
+
+                        if (parts.length != 4) {
+                            throw new InvalidNumberOfArgumentsException();
+                        }
+                        if (!userService.isCurrentUserAuthenticated()) {
+                            throw new Exception("You need to be logged in to export a playlist.");
+                        }
+
+                        String playlistName = parts[2];
+                        playlistName = getRidOfQuotes(playlistName);
+
+                        String format = parts[3];
+                        playlistService.exportPlaylist(userService.getCurrentUser(), playlistName, format);
+                    } else {
+                        throw new Exception("Unknown export command");
+                    }
+                } catch (InvalidNumberOfArgumentsException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Export failed: " + e.getMessage());
+                }
+                break;
+
+            case "exit":
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
             default:
                 System.out.println("Command unknown!");
         }

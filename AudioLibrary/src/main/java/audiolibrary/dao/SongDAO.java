@@ -27,7 +27,6 @@ public class SongDAO {
         return CSVUtil.readSongsFromCSV(CSV_FILE);
     }
 
-
     public boolean createSong(Song song) throws SongAlreadyExistsException {
         List<Song> songs = getAllSongs();
         if (songs.stream().anyMatch(s -> s.getName().equals(song.getName()) && s.getAuthor().equals(song.getAuthor()))) {

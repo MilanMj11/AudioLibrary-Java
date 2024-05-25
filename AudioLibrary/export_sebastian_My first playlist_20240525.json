@@ -1,0 +1,35 @@
+{
+  "playlistName": "My first playlist",
+  "songs": [
+    {
+      "id": 2,
+      "name": "Middle Child",
+      "author": "J. Cole",
+      "releaseYear": 2019
+    },
+    {
+      "id": 3,
+      "name": "Random1",
+      "author": "Random2",
+      "releaseYear": 1234
+    },
+    {
+      "id": 5,
+      "name": "Piesa 5",
+      "author": "Artist 5",
+      "releaseYear": 1992
+    },
+    {
+      "id": 8,
+      "name": "Greatest",
+      "author": "Eminem",
+      "releaseYear": 2019
+    },
+    {
+      "id": 12,
+      "name": "Stan",
+      "author": "Eminem",
+      "releaseYear": 2000
+    }
+  ]
+}
