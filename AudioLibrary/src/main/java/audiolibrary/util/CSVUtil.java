@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVUtil {
+
     public static List<Song> readSongsFromCSV(String fileName) {
         List<Song> songs = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {

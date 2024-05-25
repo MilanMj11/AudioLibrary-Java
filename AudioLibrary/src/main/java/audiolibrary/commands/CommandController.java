@@ -158,8 +158,8 @@ public class CommandController {
                 break;
             case "list":
                 try {
-                    if (parts.length == 2){
-                        if ("playlists".equals(parts[1])){
+                    if (parts.length == 2) {
+                        if ("playlists".equals(parts[1])) {
                             if (!userService.isCurrentUserAuthenticated()) {
                                 throw new Exception("You need to be logged in to list your playlists.");
                             }
@@ -181,6 +181,37 @@ public class CommandController {
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     System.out.println("List failed: " + e.getMessage());
+                }
+                break;
+            case "search":
+                try {
+                    if (parts.length == 3) {
+
+                        String searchCriteria = parts[1];
+                        String searchTerm = parts[2];
+
+                        searchTerm = getRidOfQuotes(searchTerm);
+                        searchTerm = searchTerm.trim();
+
+                        // List<Song> songs = songService.searchSongs(searchCriteria, searchTerm);
+                        songService.listSongs(songService.searchSongs(searchCriteria, searchTerm), 1);
+                    } else if (parts.length == 4) {
+
+                        String searchCriteria = parts[1];
+                        String searchTerm = parts[2];
+                        int page = Integer.parseInt(parts[3]);
+
+                        searchTerm = getRidOfQuotes(searchTerm);
+                        searchTerm = searchTerm.trim();
+
+                        songService.listSongs(songService.searchSongs(searchCriteria, searchTerm), page);
+                    } else {
+                        throw new InvalidNumberOfArgumentsException();
+                    }
+                } catch (InvalidNumberOfArgumentsException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Search failed: " + e.getMessage());
                 }
                 break;
             default:

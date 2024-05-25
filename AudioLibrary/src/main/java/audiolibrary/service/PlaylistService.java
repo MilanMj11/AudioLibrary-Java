@@ -105,7 +105,7 @@ public class PlaylistService {
         int totalPages = (int) Math.ceil((double) totalPlaylists / SONGS_PER_PAGE);
 
         if (page < 1 || page > totalPages) {
-            throw new Exception("Invalid page number.");
+            throw new Exception("Invalid page number");
         }
 
         int start = (page - 1) * SONGS_PER_PAGE;
