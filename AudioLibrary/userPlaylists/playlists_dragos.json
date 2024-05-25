@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "name": "Playlistul lui Dragos",
+    "userId": "dragos",
+    "songIds": [
+      18,
+      19,
+      10,
+      11
+    ]
+  }
+]

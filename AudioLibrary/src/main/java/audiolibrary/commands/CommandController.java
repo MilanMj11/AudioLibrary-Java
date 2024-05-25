@@ -1,6 +1,7 @@
 package audiolibrary.commands;
 
 import audiolibrary.exceptions.InvalidNumberOfArgumentsException;
+import audiolibrary.model.Helper;
 import audiolibrary.service.AuditService;
 import audiolibrary.service.PlaylistService;
 import audiolibrary.service.SongService;
@@ -19,7 +20,7 @@ public class CommandController {
     private PlaylistService playlistService;
     private AuditService auditService;
 
-    public CommandController(UserService userService, SongService songService, PlaylistService playListService, AuditService auditService){
+    public CommandController(UserService userService, SongService songService, PlaylistService playListService, AuditService auditService) {
         this.userService = userService;
         this.songService = songService;
         this.playlistService = playListService;
@@ -262,18 +263,17 @@ public class CommandController {
                 break;
             case "audit":
                 try {
-                    if (parts.length == 2){
-                        if (!userService.isCurrentUserAdmin()){
+                    if (parts.length == 2) {
+                        if (!userService.isCurrentUserAdmin()) {
                             throw new Exception("Only admins can list audit entries.");
                         }
                         auditService.listAuditEntries(parts[1], 1);
-                    } else if(parts.length == 3){
-                        if (!userService.isCurrentUserAdmin()){
+                    } else if (parts.length == 3) {
+                        if (!userService.isCurrentUserAdmin()) {
                             throw new Exception("Only admins can list audit entries.");
                         }
                         auditService.listAuditEntries(parts[1], Integer.parseInt(parts[2]));
-                    }
-                    else {
+                    } else {
                         succesfulCommand = false;
                         throw new InvalidNumberOfArgumentsException();
                     }
@@ -283,6 +283,20 @@ public class CommandController {
                 } catch (Exception e) {
                     succesfulCommand = false;
                     System.out.println("Audit failed: " + e.getMessage());
+                }
+                break;
+            case "help":
+                try {
+                    if (parts.length == 1) {
+                        Helper.getInstance().showCommands(userService.getCurrentUser(), 1);
+                    } else if (parts.length == 2) {
+                        Helper.getInstance().showCommands(userService.getCurrentUser(), Integer.parseInt(parts[1]));
+                    } else {
+                        throw new InvalidNumberOfArgumentsException();
+                    }
+                } catch (Exception e) {
+                    succesfulCommand = false;
+                    System.out.println(e.getMessage());
                 }
                 break;
             case "exit":

@@ -21,3 +21,43 @@ sebastian|add "waterfall" [20]|true
 milan|login milan abc|true
 milan|audit sebastian|true
 milan|audit sebastian 2|true
+dragos|login dragos parola|true
+dragos|create playlist "Playlistul lui Dragos"|true
+dragos|search name "Eminem"|false
+dragos|search author "eminEm"|true
+dragos|search author "LadY GaGa  "|true
+dragos|add "Playlistul lui Dragos" [10,11,18,19]|true
+dragos|list playlists|true
+dragos|export playlist "Playlistul lui Dragos" json|true
+dragos|audit dragos|false
+milan|login milan abc|true
+milan|audit dragos|true
+milan|audit dragos 2|true
+milan|audit milan|true
+sebastian|login sebastian parola1|true
+sebastian|help|true
+sebastian|help 2|true
+sebastian|help 1|true
+admin|login admin admin|true
+admin|help|true
+admin|login admin admin|true
+admin|help|true
+admin|help 3|true
+test|login test parolatest|true
+test|help|true
+test|create playlist "testPlaylist"|true
+test|list playlists|true
+test|login test parolatest|true
+test|list playlists|true
+test|help|true
+test|help 2|true
+test|search author "Eminem"|true
+test|add "testPlaylist" [7,8,11]|true
+test|help|true
+test|help 2|true
+test|export playlist "testPlaylist"|false
+test|export playlist "testPlaylist" json|true
+milan|login milan abc|true
+milan|help|true
+milan|help 2|true
+milan|help 3|true

@@ -1,0 +1,29 @@
+{
+  "playlistName": "Playlistul lui Dragos",
+  "songs": [
+    {
+      "id": 10,
+      "name": "Those Kinda Nights",
+      "author": "Eminem",
+      "releaseYear": 2020
+    },
+    {
+      "id": 11,
+      "name": "Lose Yourself",
+      "author": "Eminem",
+      "releaseYear": 2002
+    },
+    {
+      "id": 18,
+      "name": "Shallow",
+      "author": "Lady Gaga",
+      "releaseYear": 2018
+    },
+    {
+      "id": 19,
+      "name": "Just Dance",
+      "author": "Lady Gaga",
+      "releaseYear": 2008
+    }
+  ]
+}

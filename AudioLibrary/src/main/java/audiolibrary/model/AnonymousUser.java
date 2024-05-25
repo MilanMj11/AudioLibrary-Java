@@ -30,7 +30,7 @@ public class AnonymousUser implements UserState{
     }
 
     @Override
-    public User getUser() throws Exception{
-        throw new Exception("You are not logged in.");
+    public User getUser(){
+        return null;
     }
 }

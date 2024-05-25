@@ -1,0 +1,23 @@
+{
+  "playlistName": "testPlaylist",
+  "songs": [
+    {
+      "id": 7,
+      "name": "My Darling",
+      "author": "Eminem",
+      "releaseYear": 2019
+    },
+    {
+      "id": 8,
+      "name": "Greatest",
+      "author": "Eminem",
+      "releaseYear": 2019
+    },
+    {
+      "id": 11,
+      "name": "Lose Yourself",
+      "author": "Eminem",
+      "releaseYear": 2002
+    }
+  ]
+}
