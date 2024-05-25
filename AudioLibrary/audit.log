@@ -78,3 +78,11 @@ milan|audit milan|true
 milan|audi milan 6|false
 milan|audit milan 6|true
 milan|audit milan 7|true
+admin|login admin admin|true
+admin|llist playlists|false
+admin|list platlists|false
+admin|list playlists|true
+admin|add admin1 [1,2]|false
+admin|export playlist 1|false
+admin|export playlist 1 json|false
+admin|export playlist "1" json|false

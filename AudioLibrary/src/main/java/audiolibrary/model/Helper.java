@@ -38,6 +38,8 @@ public class Helper {
             return List.of("register",
                     "login",
                     "help",
+                    "search name <name>",
+                    "search author <author>",
                     "exit");
         }
         if (user.isAdmin() == false) {
