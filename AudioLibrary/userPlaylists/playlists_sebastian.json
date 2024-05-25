@@ -10,5 +10,38 @@
       8,
       12
     ]
+  },
+  {
+    "id": 2,
+    "name": "waterfall",
+    "userId": "sebastian",
+    "songIds": [
+      1,
+      2,
+      5,
+      6,
+      10,
+      11,
+      12,
+      20
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Waterfall",
+    "userId": "sebastian",
+    "songIds": []
+  },
+  {
+    "id": 4,
+    "name": "even another one",
+    "userId": "sebastian",
+    "songIds": [
+      1,
+      2,
+      3,
+      6,
+      10
+    ]
   }
 ]

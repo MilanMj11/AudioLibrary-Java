@@ -1,6 +1,7 @@
 package audiolibrary.commands;
 
 import audiolibrary.exceptions.InvalidNumberOfArgumentsException;
+import audiolibrary.service.AuditService;
 import audiolibrary.service.PlaylistService;
 import audiolibrary.service.SongService;
 import audiolibrary.service.UserService;
@@ -16,11 +17,13 @@ public class CommandController {
     private UserService userService;
     private SongService songService;
     private PlaylistService playlistService;
+    private AuditService auditService;
 
-    public CommandController(UserService userService, SongService songService, PlaylistService playListService) {
+    public CommandController(UserService userService, SongService songService, PlaylistService playListService, AuditService auditService){
         this.userService = userService;
         this.songService = songService;
         this.playlistService = playListService;
+        this.auditService = auditService;
     }
 
     public void executeCommand(String command) {
@@ -29,7 +32,7 @@ public class CommandController {
             System.out.println("Command unknown!");
             return;
         }
-
+        boolean succesfulCommand = true;
         switch (parts[0]) {
             case "register":
                 try {
@@ -37,9 +40,11 @@ public class CommandController {
                     userService.registerUser(parts[1], parts[2]);
                     System.out.println("Registered successfully");
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     /// Other exceptions
+                    succesfulCommand = false;
                     System.out.println("Register failed: " + e.getMessage());
                 }
                 break;
@@ -49,9 +54,11 @@ public class CommandController {
                     userService.loginUser(parts[1], parts[2]);
                     System.out.println("Login successful");
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     /// Other exceptions
+                    succesfulCommand = false;
                     System.out.println("Login failed: " + e.getMessage());
                 }
                 break;
@@ -61,9 +68,11 @@ public class CommandController {
                     userService.logoutUser();
                     System.out.println("Logout successful");
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     /// Other exceptions
+                    succesfulCommand = false;
                     System.out.println("Logout failed: " + e.getMessage());
                 }
                 break;
@@ -73,9 +82,11 @@ public class CommandController {
                     userService.promoteUser(parts[1]);
                     System.out.println("User promoted successfully");
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     /// Other exceptions
+                    succesfulCommand = false;
                     System.out.println("Promotion failed: " + e.getMessage());
                 }
                 break;
@@ -127,9 +138,11 @@ public class CommandController {
                         throw new Exception("Unknown create command");
 
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     /// Other exceptions
+                    succesfulCommand = false;
                     System.out.println("Create failed: " + e.getMessage());
                 }
                 break;
@@ -152,7 +165,9 @@ public class CommandController {
 
                 } catch (InvalidNumberOfArgumentsException e) {
                     System.out.println(e.getMessage());
+                    succesfulCommand = false;
                 } catch (Exception e) {
+                    succesfulCommand = false;
                     System.out.println("Add failed: " + e.getMessage());
                 }
                 break;
@@ -178,8 +193,10 @@ public class CommandController {
                         }
                     }
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
+                    succesfulCommand = false;
                     System.out.println("List failed: " + e.getMessage());
                 }
                 break;
@@ -209,8 +226,10 @@ public class CommandController {
                         throw new InvalidNumberOfArgumentsException();
                     }
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
+                    succesfulCommand = false;
                     System.out.println("Search failed: " + e.getMessage());
                 }
                 break;
@@ -234,19 +253,52 @@ public class CommandController {
                         throw new Exception("Unknown export command");
                     }
                 } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
+                    succesfulCommand = false;
                     System.out.println("Export failed: " + e.getMessage());
                 }
                 break;
-
+            case "audit":
+                try {
+                    if (parts.length == 2){
+                        if (!userService.isCurrentUserAdmin()){
+                            throw new Exception("Only admins can list audit entries.");
+                        }
+                        auditService.listAuditEntries(parts[1], 1);
+                    } else if(parts.length == 3){
+                        if (!userService.isCurrentUserAdmin()){
+                            throw new Exception("Only admins can list audit entries.");
+                        }
+                        auditService.listAuditEntries(parts[1], Integer.parseInt(parts[2]));
+                    }
+                    else {
+                        succesfulCommand = false;
+                        throw new InvalidNumberOfArgumentsException();
+                    }
+                } catch (InvalidNumberOfArgumentsException e) {
+                    succesfulCommand = false;
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    succesfulCommand = false;
+                    System.out.println("Audit failed: " + e.getMessage());
+                }
+                break;
             case "exit":
                 System.out.println("Exiting...");
                 System.exit(0);
                 break;
             default:
+                succesfulCommand = false;
                 System.out.println("Command unknown!");
         }
+        if (userService.isCurrentUserAuthenticated())
+            try {
+                auditService.logCommand(userService.getCurrentUser(), command, succesfulCommand);
+            } catch (Exception e) {
+                System.out.println("Failed to log command: " + e.getMessage());
+            }
     }
 
     private String getRidOfQuotes(String str) throws Exception {

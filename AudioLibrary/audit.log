@@ -1,0 +1,23 @@
+sebastian|login sebastian parola1|true
+sebastian|icnercare|false
+sebastian|comanda noua|false
+sebastian|create playlist "even another one"|true
+sebastian|add "even another one" [1,6,3,2,2,10]|true
+randomUser|login randomUser randomPassword|true
+randomUser|comanda|false
+randomUser|incercare|false
+randomUser|create song "I want to create song" "by me" 2024|false
+randomUser|good|false
+milan|login milan abc|true
+milan|audit randomUser|true
+milan|audit sebatsian|true
+milan|audit sebastian|true
+milan|audit milan|true
+sebastian|login sebastian parola1|true
+sebastian|mai incerc|false
+sebastian|sa am multe|false
+sebastian|comenzi|false
+sebastian|add "waterfall" [20]|true
+milan|login milan abc|true
+milan|audit sebastian|true
+milan|audit sebastian 2|true

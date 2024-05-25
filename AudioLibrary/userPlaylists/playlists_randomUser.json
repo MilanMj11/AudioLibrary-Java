@@ -4,5 +4,15 @@
     "name": "ok",
     "userId": "randomUser",
     "songIds": []
+  },
+  {
+    "id": 2,
+    "name": "new one lol",
+    "userId": "randomUser",
+    "songIds": [
+      1,
+      2,
+      5
+    ]
   }
 ]

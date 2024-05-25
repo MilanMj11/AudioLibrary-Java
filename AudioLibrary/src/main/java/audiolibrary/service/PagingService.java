@@ -1,5 +1,6 @@
 package audiolibrary.service;
 
+import audiolibrary.model.Audit;
 import audiolibrary.model.Playlist;
 import audiolibrary.model.Song;
 
@@ -15,6 +16,9 @@ public class PagingService<T> {
             }
             if(items instanceof Playlist){
                 throw new Exception("No playlists found");
+            }
+            if(items instanceof Audit){
+                throw new Exception("No audit entries found");
             }
             throw new Exception("No items found");
         }
@@ -49,7 +53,11 @@ public class PagingService<T> {
         } else if(item instanceof Playlist){
             Playlist playlist = (Playlist) item;
             return playlist.getName();
-        } else {
+        } else if(item instanceof Audit){
+            Audit audit = (Audit) item;
+            return audit.getUsername() + " | " + audit.getAction() + " | " + audit.isSuccess();
+        }
+        else {
             return item.toString();
         }
     }
@@ -59,7 +67,10 @@ public class PagingService<T> {
             return "`list playlists <page_number>`";
         } else if (item instanceof Song) {
             return "`search <criteria> <Name> <page_number>`";
-        } else {
+        } else if (item instanceof Audit) {
+            return "`audit <username> <page_number>'";
+        }
+        else {
             return "`<command>`";
         }
     }
