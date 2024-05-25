@@ -57,6 +57,11 @@ public class Helper {
         return this.commands.subList(2, this.commands.size());
     }
 
+    /**
+     * Shows available commands from a specific page for a given user.
+     * @param user the user for which the commands are shown
+     * @param page the page number
+     */
     public void showCommands(User user, int page) {
         PagingService<String> pagingService = new PagingService<>();
         try {

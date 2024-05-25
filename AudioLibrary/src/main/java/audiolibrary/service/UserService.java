@@ -15,7 +15,7 @@ public class UserService {
         this.currentState = new AnonymousUser(this);
     }
 
-    public User getCurrentUser() throws Exception{
+    public User getCurrentUser(){
         return currentState.getUser();
     }
 
@@ -47,6 +47,13 @@ public class UserService {
         return currentState.promote(username);
     }
 
+    /**
+     * Register a new user with the given username and password and add it to the database
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return true if the user was created successfully
+     * @throws UsernameAlreadyExistsException if the username already exists
+     */
     public boolean performregisterUser(String username, String password) throws UsernameAlreadyExistsException {
         if (userDAO.findUserByUsername(username) != null) {
             throw new UsernameAlreadyExistsException(); // Username already exists
@@ -55,6 +62,14 @@ public class UserService {
         return userDAO.createUser(user);
     }
 
+    /**
+     * Logs in a user with the given username and password and sets the current
+     * state to AuthenticatedUser/AdminUser depending on the user's role
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return true if the user was logged in successfully
+     * @throws InvalidUsernameOrPasswordException if the username or password is incorrect
+     */
     public boolean performloginUser(String username, String password) throws InvalidUsernameOrPasswordException{
         User user = userDAO.findUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
@@ -68,10 +83,18 @@ public class UserService {
         throw new InvalidUsernameOrPasswordException();
     }
 
+    /**
+     * Logs out the current user by setting the current state to AnonymousUser
+     */
     public void performlogoutUser() {
         setCurrentState(new AnonymousUser(this));
     }
 
+    /**
+     * Promotes a user to an admin by setting the admin flag to true in the database
+     * @param username the username of the user to promote
+     * @return true if the user was promoted successfully
+     */
     public boolean performpromoteUser(String username) {
         User user = userDAO.findUserByUsername(username);
         if (user != null && !user.isAdmin()) {

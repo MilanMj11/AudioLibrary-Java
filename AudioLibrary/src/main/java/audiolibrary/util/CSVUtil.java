@@ -8,6 +8,11 @@ import java.util.List;
 
 public class CSVUtil {
 
+    /**
+     * Reads songs from a CSV file and returns a list of songs.
+     * @param fileName the name of the file to read from
+     * @return the list of songs read from the file
+     */
     public static List<Song> readSongsFromCSV(String fileName) {
         List<Song> songs = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -26,6 +31,11 @@ public class CSVUtil {
         return songs;
     }
 
+    /**
+     * Writes a list of songs to a CSV file.
+     * @param fileName the name of the file to write to
+     * @param songs the list of songs to write to the file
+     */
     public static void writeSongsToCSV(String fileName, List<Song> songs) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (Song song : songs) {

@@ -20,6 +20,9 @@ public class Main {
         /// use audiolibrary
         /// select * from users;
 
+        /**
+         * We initialize all the Services needed to run the application.
+         */
         Scanner scanner = new Scanner(System.in);
         UserService userService = new UserService();
         SongService songService = new SongService();

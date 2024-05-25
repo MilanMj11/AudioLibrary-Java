@@ -27,6 +27,10 @@ public class CommandController {
         this.auditService = auditService;
     }
 
+    /**
+     * Executes the command given by the user.
+     * @param command The command to be executed.
+     */
     public void executeCommand(String command) {
         String[] parts = splitCommand(command);
         if (parts.length == 0) {

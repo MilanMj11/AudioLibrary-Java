@@ -10,6 +10,12 @@ import java.util.List;
 public class PagingService<T> {
     private static final int ITEMS_PER_PAGE = 5;
 
+    /**
+     * Lists the items from a list at a given page
+     * @param items the list of items that we want to display
+     * @param page the page number
+     * @throws Exception if the page number is invalid or if the list is empty
+     */
     public void listItems(List<T> items, int page) throws Exception {
         if (items.isEmpty()) {
             if (items instanceof Song) {

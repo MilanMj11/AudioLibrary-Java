@@ -20,6 +20,14 @@ public class PlaylistService {
     private PagingService<Playlist> pagingService = new PagingService<>();
     private SongService songService = new SongService();
 
+    /**
+     * Exports a specified playlist for a user in a specified format, currently only JSON is supported
+     * @param user the user for which the playlist will be exported
+     * @param playlistIdentifier the name or id of the playlist to be exported
+     * @param format the format in which the playlist will be exported (Json)
+     * @param <T> the type of the playlist identifier which can be Name/ID
+     * @throws Exception if the playlist is not found, or the format is not supported
+     */
     public <T> void exportPlaylist(User user, T playlistIdentifier, String format) throws Exception {
         /// will only work with JSON format
         loadPlaylists(user);
@@ -88,6 +96,11 @@ public class PlaylistService {
         return formatter.format(new Date());
     }
 
+    /**
+     * Loads the playlists for a user if they are not already loaded from the JSON file
+     * @param user the user for which the playlists will be loaded
+     * @return true if the playlists were loaded successfully, false otherwise
+     */
     public boolean loadPlaylists(User user) {
         /// if the user's playlists are already loaded, return
         if (userPlaylists.containsKey(user)) {
@@ -101,6 +114,12 @@ public class PlaylistService {
         return false;
     }
 
+    /**
+     * Creates a new playlist for a user, with the specified name, and saves it to the JSON file
+     * @param user the user for which the playlist will be created
+     * @param playlistName the name of the playlist to be created
+     * @throws Exception if the playlist already exists, or if the playlists could not be loaded
+     */
     public void createPlaylist(User user, String playlistName) throws Exception {
         initializeUserPlaylistsFile(user);
 
@@ -125,6 +144,15 @@ public class PlaylistService {
         System.out.println("Playlist \"" + playlistName + "\" was created successfully!");
     }
 
+
+    /**
+     * Adds one or multiple songs to a playlist for a user and saves the updated playlist to the JSON file
+     * @param user the user for which the songs will be added to the playlist
+     * @param playlistName the name of the playlist
+     * @param songIds the ids of the songs that will be added
+     * @param songLibrary the list of all songs in the library so we check if the songs exist
+     * @throws Exception if the playlist does not exist, or if the songs do not exist
+     */
     public void addSongsToPlaylist(User user, String playlistName, List<Integer> songIds, List<Song> songLibrary) throws Exception {
         loadPlaylists(user);
         List<Playlist> playlists = getUserPlaylists(user);
@@ -169,6 +197,12 @@ public class PlaylistService {
         System.out.println("Added songs to \"" + playlistName + "\" successfully!");
     }
 
+    /**
+     * Lists all the playlists of a user, at a specified page, using paging
+     * @param user the user for which the playlists will be listed
+     * @param page the page number
+     * @throws Exception if the playlists could not be loaded
+     */
     public void listPlaylists(User user, int page) throws Exception {
         loadPlaylists(user);
         List<Playlist> playlists = getUserPlaylists(user);
@@ -179,6 +213,11 @@ public class PlaylistService {
         pagingService.listItems(playlists, page);
     }
 
+    /**
+     * Gets the playlist of a user. (method could be private)
+     * @param user the user for which the playlist will be retrieved
+     * @return the list of playlists of the user
+     */
     public List<Playlist> getUserPlaylists(User user) {
         return userPlaylists.get(user);
     }

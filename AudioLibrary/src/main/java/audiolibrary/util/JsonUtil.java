@@ -18,7 +18,11 @@ public class JsonUtil {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String PLAYLISTS_DIR = "userPlaylists";
 
-    public static void initializeUserPlaylistsFile(User user) throws Exception {
+    /**
+     * Initializes the playlists JSON file for a user. If the file does not exist, it creates an empty one.
+     * @param user the user for which the playlists file will be created.
+     */
+    public static void initializeUserPlaylistsFile(User user) {
         String filename = PLAYLISTS_DIR + "/playlists_" + user.getUsername() + ".json";
         File file = new File(filename);
         if (!file.exists()) {
@@ -27,6 +31,11 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * Saves the playlists of a user to his JSON file.
+     * @param username the username of the user.
+     * @param playlists the playlists to be saved.
+     */
     public static void savePlaylistsToJson(String username, List<Playlist> playlists) {
         String json = gson.toJson(playlists);
         try (FileWriter writer = new FileWriter(PLAYLISTS_DIR + "/playlists_" + username + ".json")) {
@@ -36,6 +45,11 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * Loads the playlists of a user from his JSON file.
+     * @param username the username of the user.
+     * @return
+     */
     public static List<Playlist> loadPlaylistsFromJson(String username) {
         String jsonFilePath = PLAYLISTS_DIR + "/playlists_" + username + ".json";
         try (FileReader reader = new FileReader(jsonFilePath)) {
@@ -47,6 +61,11 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * Gets the next playlist id for a user by accessing his playlists JSON file to find the maximum id.
+     * @param username the username of the user.
+     * @return the next playlist id.
+     */
     public static Integer getNextPlaylistIdByUserFromJson(String username) {
         List<Playlist> playlists = loadPlaylistsFromJson(username);
         if(playlists == null || playlists.isEmpty()) {

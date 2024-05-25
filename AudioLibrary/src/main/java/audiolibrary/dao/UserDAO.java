@@ -28,6 +28,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Updates a given user in the database if it exists
+     * @param user is the user to be updated
+     * @return true if the user was updated, false otherwise
+     */
     public boolean updateUser(User user) {
         String sql = "UPDATE users SET username = ?, password = ?, is_admin = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
@@ -45,6 +50,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Tries to find a user in the database by username
+     * @param username is the username of the user to be found
+     * @return the user if it exists, null otherwise
+     */
     public User findUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection connection = DatabaseUtil.getConnection();
